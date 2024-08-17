@@ -1,7 +1,18 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const userRoute = require("./API/routes/user.route.js");
+const cors = require('cors');
 const app = express();
+
+// CORS Configuration
+app.use(cors({
+  origin: 'http://localhost:3000',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+// Handle preflight requests
+app.options('*', cors());
 
 //middleware
 app.use(express.json());
@@ -21,8 +32,8 @@ mongoose
   )
   .then(() => {
     console.log("Connected to the database");
-    app.listen(3000, () => {
-      console.log("Server is running in 3000 port");
+    app.listen(5000, () => {
+      console.log("Server is running in 5000 port");
     });
   })
   .catch(() => {
