@@ -14,6 +14,7 @@ const userSchema = new mongoose.Schema(
     email: {
       type: String,
       required: [true, "Enter your email address"],
+      unique: true, // Ensure email is unique
       match: [/.+\@.+\..+/, "Please enter a valid email address"], // optional email validation
     },
     contact: {
@@ -44,14 +45,24 @@ const userSchema = new mongoose.Schema(
         validator: function (v) {
           return (
             v.length >= 8 &&
-            /[A-Z]/.test(v) &&      // At least one uppercase letter
-            /[a-z]/.test(v) &&      // At least one lowercase letter
+            /[A-Z]/.test(v) && // At least one uppercase letter
+            /[a-z]/.test(v) && // At least one lowercase letter
             /[!@#$%^&*(),.?":{}|<>]/.test(v) // At least one special character
           );
         },
         message:
           "Password must be at least 8 characters long, with at least one uppercase letter, one lowercase letter, and one special character",
       },
+    },
+    // Field for forget password recovery code
+    forgetPasswordCode: {
+      type: String,
+      default: null,
+    },
+    // Optional field for expiration time of the recovery code
+    forgetPasswordCodeExpires: {
+      type: Date,
+      default: null,
     },
   },
   { timestamps: true }
